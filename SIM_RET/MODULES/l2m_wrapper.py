@@ -155,12 +155,12 @@ def l2m_wrapper(base_dir,pix_id):
         # define perturbation coefficient for calculating Jacobian matrix
         # the direction is determine by random number generator either 1 or -1
         # this coefficient will be evaluated based on the cost function chi2
-        # if chi2 reduces, this coefficient should be reduced too
+        # if chi2 reduces, perturbation coefficient should be reduced too
         if i == 0:
-            p_tau = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,0]   
-            p_reff_t = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,1]
-            p_reff_b = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,2]
-            p_k = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,3]
+            p_tau = c_p[0]*[-1,1][random.randrange(2)]*x0[0]   
+            p_reff_t = c_p[0]*[-1,1][random.randrange(2)]*x0[1]
+            p_reff_b = c_p[0]*[-1,1][random.randrange(2)]*x0[2]
+            p_k = c_p[0]*[-1,1][random.randrange(2)]*x0[3]
         
         # print statement
         print("Info     | Perturbation coefficient p_tau = %.3f p_reff_top = %.3f p_reff_base = %.3f and p_shape = %.3f" %(p_tau,p_reff_t,p_reff_b,p_k))
@@ -327,6 +327,12 @@ def l2m_wrapper(base_dir,pix_id):
         
         # initial condition
         if i == 0:
+            # define perturbation coefficient
+            p_tau = c_p[0]*[-1,1][random.randrange(2)]*xi[0]   
+            p_reff_t = c_p[0]*[-1,1][random.randrange(2)]*xi[1]
+            p_reff_b = c_p[0]*[-1,1][random.randrange(2)]*xi[2]
+            p_k = c_p[0]*[-1,1][random.randrange(2)]*xi[3]
+            
             # update state vector
             xi_arr[i+1,:] = xi
 
@@ -336,10 +342,10 @@ def l2m_wrapper(base_dir,pix_id):
             gamma = gamma*f     # gradient descent
             
             # define perturbation coefficient
-            p_tau = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,0]   
-            p_reff_t = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,1]
-            p_reff_b = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,2]
-            p_k = c_p[0]*[-1,1][random.randrange(2)]*xi_arr[i,3]
+            p_tau = c_p[0]*[-1,1][random.randrange(2)]*xi[0]   
+            p_reff_t = c_p[0]*[-1,1][random.randrange(2)]*xi[1]
+            p_reff_b = c_p[0]*[-1,1][random.randrange(2)]*xi[2]
+            p_k = c_p[0]*[-1,1][random.randrange(2)]*xi[3]
 
             # updata state vector            
             xi_arr[i+1,:] = xi_arr[i,:]
@@ -349,11 +355,11 @@ def l2m_wrapper(base_dir,pix_id):
             # define new gamma
             gamma = gamma/f     # gradient descent
 
-            # define delta state for the reference when calculating Jacobian matrix
-            p_tau = c_p[1]*[-1,1][random.randrange(2)]*xi_arr[i,0]   
-            p_reff_t = c_p[1]*[-1,1][random.randrange(2)]*xi_arr[i,1]
-            p_reff_b = c_p[1]*[-1,1][random.randrange(2)]*xi_arr[i,2]
-            p_k = c_p[1]*[-1,1][random.randrange(2)]*xi_arr[i,3]
+            # define perturbation coefficient
+            p_tau = c_p[1]*[-1,1][random.randrange(2)]*xi[0]   
+            p_reff_t = c_p[1]*[-1,1][random.randrange(2)]*xi[1]
+            p_reff_b = c_p[1]*[-1,1][random.randrange(2)]*xi[2]
+            p_k = c_p[1]*[-1,1][random.randrange(2)]*xi[3]
             
             # update state vector
             xi_arr[i+1,:] = xi
@@ -363,11 +369,11 @@ def l2m_wrapper(base_dir,pix_id):
             # define new gamma
             gamma = 1           # pure Gauss-Newton approach
 
-            # define delta state for the reference when calculating Jacobian matrix
-            p_tau = c_p[2]*[-1,1][random.randrange(2)]*xi_arr[i,0]   
-            p_reff_t = c_p[2]*[-1,1][random.randrange(2)]*xi_arr[i,1]
-            p_reff_b = c_p[2]*[-1,1][random.randrange(2)]*xi_arr[i,2]
-            p_k = c_p[2]*[-1,1][random.randrange(2)]*xi_arr[i,3]
+            # define perturbation coefficient
+            p_tau = c_p[2]*[-1,1][random.randrange(2)]*xi[0]   
+            p_reff_t = c_p[2]*[-1,1][random.randrange(2)]*xi[1]
+            p_reff_b = c_p[2]*[-1,1][random.randrange(2)]*xi[2]
+            p_k = c_p[2]*[-1,1][random.randrange(2)]*xi[3]
             
             # update state vector
             xi_arr[i+1,:] = xi            
@@ -390,7 +396,7 @@ def l2m_wrapper(base_dir,pix_id):
         # define threshold (ratio in percent) between chi2_i+1 and chi2_i+1
         # a retrieval is converged when the change on chi2 is neggligible
         # don't use absolute threshold as it changes with n_measurements
-        t_dchi2 = 0.015  
+        t_dchi2 = 0.05  
         
         # 1 = converged :: should be more than one iteration
         if i > 0 and r_chi2 < t_dchi2 and chi2_arr[i+1] <= nmeas:     
