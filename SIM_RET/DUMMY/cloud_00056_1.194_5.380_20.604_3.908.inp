@@ -1,0 +1,22 @@
+data_files_path /deos/trismonock/libRadtran-2.0.2/data/
+atmosphere_file /deos/trismonock/libRadtran-2.0.2/data/atmmod/afglms.dat
+source solar /deos/trismonock/libRadtran-2.0.2/data/solar_flux/kurudz_1.0nm.dat
+albedo_file /deos/trismonock/CLOUD_RETRIEVAL_PROFILE_FULL/DATA/albedo_sea_water.dat
+day_of_year 85
+sza 30.00
+phi0 100.00
+phi 0.00
+umu 1.0
+zout 10.00
+rte_solver fdisort2
+mol_abs_param lowtran
+number_of_streams 16
+wavelength 550.00 1700.00
+aerosol_default
+aerosol_haze 4
+aerosol_season 1
+ic_file 1D /deos/trismonock/CLOUD_RETRIEVAL_PROFILE_FULL/SIM_RET/DUMMY/cloud_00056_1.194_5.380_20.604_3.908.dat
+ic_properties yang2013 interpolate
+ic_habit_yang2013 column_8elements severe
+ic_modify tau550 set 1.1942777086113687
+quiet
